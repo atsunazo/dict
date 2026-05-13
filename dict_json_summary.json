@@ -1,0 +1,263 @@
+{
+  "schema": "nazo-dict-json-set-v1",
+  "created_at": "2026-05-13T02:39:15.911216+00:00",
+  "description": "5つの辞書をそれぞれ個別JSON化した一覧。vocab_unique.csvは他4辞書の重複削除版として個別保持。",
+  "columns": [
+    "word",
+    "count",
+    "source_id",
+    "len",
+    "head",
+    "tail"
+  ],
+  "files": [
+    {
+      "json_file": "dict_illustration.json",
+      "name": "イラスト辞書",
+      "source_file": "イラスト辞書.txt",
+      "source_type": "text",
+      "record_count": 4276,
+      "raw_line_count": 4276,
+      "min_length": 1,
+      "max_length": 12,
+      "top_lengths": [
+        [
+          4,
+          1254
+        ],
+        [
+          3,
+          935
+        ],
+        [
+          5,
+          690
+        ],
+        [
+          6,
+          479
+        ],
+        [
+          2,
+          466
+        ],
+        [
+          7,
+          246
+        ],
+        [
+          8,
+          111
+        ],
+        [
+          9,
+          49
+        ],
+        [
+          1,
+          24
+        ],
+        [
+          10,
+          16
+        ]
+      ]
+    },
+    {
+      "json_file": "dict_general.json",
+      "name": "一般語辞典",
+      "source_file": "一般語辞典.txt",
+      "source_type": "text",
+      "record_count": 31226,
+      "raw_line_count": 31226,
+      "min_length": 2,
+      "max_length": 15,
+      "top_lengths": [
+        [
+          4,
+          13892
+        ],
+        [
+          3,
+          7704
+        ],
+        [
+          5,
+          5783
+        ],
+        [
+          6,
+          1548
+        ],
+        [
+          2,
+          1492
+        ],
+        [
+          7,
+          497
+        ],
+        [
+          8,
+          198
+        ],
+        [
+          9,
+          73
+        ],
+        [
+          10,
+          28
+        ],
+        [
+          11,
+          9
+        ]
+      ]
+    },
+    {
+      "json_file": "dict_kobuta.json",
+      "name": "仔豚辞書",
+      "source_file": "仔豚辞書.txt",
+      "source_type": "text",
+      "record_count": 200383,
+      "raw_line_count": 200383,
+      "min_length": 2,
+      "max_length": 8,
+      "top_lengths": [
+        [
+          4,
+          43091
+        ],
+        [
+          5,
+          41186
+        ],
+        [
+          6,
+          39568
+        ],
+        [
+          7,
+          34193
+        ],
+        [
+          8,
+          24244
+        ],
+        [
+          3,
+          16046
+        ],
+        [
+          2,
+          2055
+        ]
+      ]
+    },
+    {
+      "json_file": "dict_food.json",
+      "name": "食べ物辞書",
+      "source_file": "食べ物辞書.txt",
+      "source_type": "text",
+      "record_count": 3092,
+      "raw_line_count": 3092,
+      "min_length": 1,
+      "max_length": 20,
+      "top_lengths": [
+        [
+          4,
+          523
+        ],
+        [
+          6,
+          456
+        ],
+        [
+          5,
+          440
+        ],
+        [
+          7,
+          393
+        ],
+        [
+          8,
+          302
+        ],
+        [
+          9,
+          241
+        ],
+        [
+          3,
+          229
+        ],
+        [
+          10,
+          151
+        ],
+        [
+          11,
+          100
+        ],
+        [
+          2,
+          65
+        ]
+      ]
+    },
+    {
+      "json_file": "dict_vocab_unique.json",
+      "name": "vocab_unique",
+      "source_file": "vocab_unique.csv",
+      "source_type": "csv",
+      "record_count": 203773,
+      "raw_line_count": 203774,
+      "min_length": 1,
+      "max_length": 20,
+      "top_lengths": [
+        [
+          4,
+          43659
+        ],
+        [
+          5,
+          41629
+        ],
+        [
+          6,
+          40012
+        ],
+        [
+          7,
+          34560
+        ],
+        [
+          8,
+          24537
+        ],
+        [
+          3,
+          16360
+        ],
+        [
+          2,
+          2140
+        ],
+        [
+          9,
+          350
+        ],
+        [
+          10,
+          194
+        ],
+        [
+          11,
+          112
+        ]
+      ]
+    }
+  ]
+}
