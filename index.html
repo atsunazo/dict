@@ -5,129 +5,1253 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>辞書検索 JSON版</title>
 <style>
-:root{--bg:#f5f7fb;--card:#fff;--ink:#111827;--muted:#6b7280;--line:#e5e7eb;--blue:#2563eb;--blue2:#1d4ed8;--green:#059669;--red:#991b1b;--amber:#b45309;--shadow:0 8px 24px rgba(15,23,42,.08)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}.wrap{max-width:1280px;margin:auto;padding:14px}.hero{display:flex;justify-content:space-between;gap:12px;align-items:flex-end;margin-bottom:10px}.hero h1{font-size:24px;margin:0}.hero p{margin:.25rem 0 0;color:var(--muted)}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:12px;margin-bottom:10px}.sectionTitle{font-size:15px;font-weight:700;margin:0 0 8px}.field{margin:6px 0}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}.row{display:flex;gap:8px;align-items:flex-end}.row>*{min-width:0}.searchGrid{display:grid;grid-template-columns:2.2fr 1.1fr .65fr .8fr .8fr;gap:8px;align-items:end}.subGrid{display:grid;grid-template-columns:1.4fr 1fr 1fr auto 1fr 1fr;gap:8px;align-items:end}@media(max-width:980px){.searchGrid,.subGrid{grid-template-columns:1fr 1fr}.hero{display:block}}@media(max-width:620px){.searchGrid,.subGrid{grid-template-columns:1fr}.row{flex-wrap:wrap}}input,select,button,textarea{font:inherit}input[type=text],input[type=number],select,textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px;background:#fff}textarea{min-height:76px;resize:vertical}.btn{border:0;border-radius:9px;background:var(--blue);color:#fff;padding:9px 12px;cursor:pointer;white-space:nowrap}.btn:hover{background:var(--blue2)}.btn.light{background:#eef2ff;color:#1e40af}.btn.gray{background:#374151}.btn.green{background:var(--green)}.small{font-size:12px;color:var(--muted)}.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#f9fafb;border-radius:999px;padding:4px 8px;margin:2px 2px 0 0;font-size:12px}.dictList{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}@media(max-width:900px){.dictList{grid-template-columns:1fr 1fr}}.dictItem{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:#f9fafb;border-radius:9px;padding:7px}.dictItem input{width:auto}.drop{border:2px dashed #cbd5e1;border-radius:12px;background:#f8fafc;text-align:center;padding:10px}.drop.drag{border-color:var(--blue);background:#eff6ff}.progress{height:7px;background:#e5e7eb;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:var(--blue)}.stat{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.stat div{background:#f9fafb;border:1px solid var(--line);border-radius:10px;padding:8px}.stat b{display:block;font-size:18px}.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 11px;cursor:pointer}.tab.active{background:#dbeafe;border-color:#93c5fd;color:#1e40af}.panel{display:none}.panel.active{display:block}.toolbar{display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap;align-items:center;margin-bottom:8px}.tableWrap{max-height:64vh;overflow:auto;border:1px solid var(--line);border-radius:12px}table{border-collapse:collapse;width:100%;background:#fff;table-layout:fixed}col.col-word{width:34%}col.col-len{width:90px}col.col-space{width:auto}th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;white-space:nowrap}th{position:sticky;top:0;background:#f3f4f6;z-index:1;cursor:pointer}tr:hover td{background:#f9fafb}td.futureSpace,th.futureSpace{background:#fff;color:transparent;cursor:default}tr:hover td.futureSpace{background:#f9fafb}.wordLink{color:#1d4ed8;text-decoration:none}.wordLink:hover{text-decoration:underline}mark{background:#fde68a;border-radius:2px;padding:0 1px}.toast{display:none;position:fixed;right:16px;bottom:16px;max-width:380px;background:#111827;color:#fff;border-radius:12px;padding:12px 14px;box-shadow:var(--shadow);z-index:20}.kbd{border:1px solid #d1d5db;border-bottom-width:2px;border-radius:6px;background:#fff;padding:1px 5px;font-size:12px}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.warn{color:var(--amber)}details summary{cursor:pointer;font-weight:700}details[open] summary{margin-bottom:8px}.compactNote{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}.rightBtns{display:flex;gap:6px;flex-wrap:wrap}
+:root{
+  --bg:#f5f7fb;
+  --card:#fff;
+  --ink:#111827;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+  --blue:#2563eb;
+  --blue2:#1d4ed8;
+  --green:#059669;
+  --red:#991b1b;
+  --amber:#b45309;
+  --shadow:0 8px 24px rgba(15,23,42,.08);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;
+}
+.wrap{
+  max-width:1280px;
+  margin:auto;
+  padding:14px;
+}
+.hero{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-end;
+  margin-bottom:10px;
+}
+.hero h1{
+  font-size:24px;
+  margin:0;
+}
+.hero p{
+  margin:.25rem 0 0;
+  color:var(--muted);
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  padding:12px;
+  margin-bottom:10px;
+}
+.sectionTitle{
+  font-size:15px;
+  font-weight:700;
+  margin:0 0 8px;
+}
+.field{
+  margin:6px 0;
+}
+.field label{
+  display:block;
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:4px;
+}
+.row{
+  display:flex;
+  gap:8px;
+  align-items:flex-end;
+}
+.row>*{
+  min-width:0;
+}
+.searchGrid{
+  display:grid;
+  grid-template-columns:2.2fr 1.1fr .65fr .8fr .8fr;
+  gap:8px;
+  align-items:end;
+}
+.subGrid{
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr auto 1fr 1fr;
+  gap:8px;
+  align-items:end;
+}
+@media(max-width:980px){
+  .searchGrid,.subGrid{grid-template-columns:1fr 1fr}
+  .hero{display:block}
+}
+@media(max-width:620px){
+  .searchGrid,.subGrid{grid-template-columns:1fr}
+  .row{flex-wrap:wrap}
+}
+input,select,button,textarea{
+  font:inherit;
+}
+input[type=text],
+input[type=number],
+select,
+textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:9px;
+  background:#fff;
+}
+textarea{
+  min-height:76px;
+  resize:vertical;
+}
+.btn{
+  border:0;
+  border-radius:9px;
+  background:var(--blue);
+  color:#fff;
+  padding:9px 12px;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.btn:hover{
+  background:var(--blue2);
+}
+.btn.light{
+  background:#eef2ff;
+  color:#1e40af;
+}
+.btn.gray{
+  background:#374151;
+}
+.btn.green{
+  background:var(--green);
+}
+.small{
+  font-size:12px;
+  color:var(--muted);
+}
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border:1px solid var(--line);
+  background:#f9fafb;
+  border-radius:999px;
+  padding:4px 8px;
+  margin:2px 2px 0 0;
+  font-size:12px;
+}
+.dictList{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:6px;
+}
+@media(max-width:900px){
+  .dictList{grid-template-columns:1fr 1fr}
+}
+.dictItem{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  border:1px solid var(--line);
+  background:#f9fafb;
+  border-radius:9px;
+  padding:7px;
+}
+.dictItem input{
+  width:auto;
+}
+.drop{
+  border:2px dashed #cbd5e1;
+  border-radius:12px;
+  background:#f8fafc;
+  text-align:center;
+  padding:10px;
+}
+.drop.drag{
+  border-color:var(--blue);
+  background:#eff6ff;
+}
+.progress{
+  height:7px;
+  background:#e5e7eb;
+  border-radius:999px;
+  overflow:hidden;
+}
+.bar{
+  height:100%;
+  width:0;
+  background:var(--blue);
+}
+.stat{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+}
+.stat div{
+  background:#f9fafb;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:8px;
+}
+.stat b{
+  display:block;
+  font-size:18px;
+}
+.tabs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:8px;
+}
+.tab{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:999px;
+  padding:7px 11px;
+  cursor:pointer;
+}
+.tab.active{
+  background:#dbeafe;
+  border-color:#93c5fd;
+  color:#1e40af;
+}
+.panel{
+  display:none;
+}
+.panel.active{
+  display:block;
+}
+.toolbar{
+  display:flex;
+  gap:8px;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  align-items:center;
+  margin-bottom:8px;
+}
+.tableWrap{
+  max-height:64vh;
+  overflow:auto;
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+table{
+  border-collapse:collapse;
+  width:100%;
+  background:#fff;
+  table-layout:fixed;
+}
+col.col-word{width:34%}
+col.col-len{width:90px}
+col.col-space{width:auto}
+th,td{
+  border-bottom:1px solid var(--line);
+  padding:7px 9px;
+  text-align:left;
+  white-space:nowrap;
+}
+th{
+  position:sticky;
+  top:0;
+  background:#f3f4f6;
+  z-index:1;
+  cursor:pointer;
+}
+tr:hover td{
+  background:#f9fafb;
+}
+td.futureSpace,
+th.futureSpace{
+  background:#fff;
+  color:transparent;
+  cursor:default;
+}
+tr:hover td.futureSpace{
+  background:#f9fafb;
+}
+.wordLink{
+  color:#1d4ed8;
+  text-decoration:none;
+}
+.wordLink:hover{
+  text-decoration:underline;
+}
+mark{
+  background:#fde68a;
+  border-radius:2px;
+  padding:0 1px;
+}
+.toast{
+  display:none;
+  position:fixed;
+  right:16px;
+  bottom:16px;
+  max-width:380px;
+  background:#111827;
+  color:#fff;
+  border-radius:12px;
+  padding:12px 14px;
+  box-shadow:var(--shadow);
+  z-index:20;
+}
+.kbd{
+  border:1px solid #d1d5db;
+  border-bottom-width:2px;
+  border-radius:6px;
+  background:#fff;
+  padding:1px 5px;
+  font-size:12px;
+}
+.mono{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+.warn{
+  color:var(--amber);
+}
+details summary{
+  cursor:pointer;
+  font-weight:700;
+}
+details[open] summary{
+  margin-bottom:8px;
+}
+.compactNote{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  align-items:center;
+  margin-top:6px;
+}
+.rightBtns{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
 </style>
 </head>
+
 <body>
 <div class="wrap">
+
   <div class="hero">
-    <div><h1>辞書検索 JSON版</h1></div>
-    <div class="small">初期自動読込: <span class="mono">dict_vocab_unique.json</span></div>
+    <div>
+      <h1>辞書検索 JSON版</h1>
+    </div>
+    <div class="small">
+      初期自動読込: <span class="mono">dict_vocab_unique.json</span>
+    </div>
   </div>
 
   <div class="card">
     <details id="dictDetails">
       <summary>辞書を変更する</summary>
+
       <div class="dictList" id="presetList"></div>
+
       <div class="row" style="margin-top:8px;align-items:center">
         <button class="btn" id="autoLoad">辞書を読み込み直す</button>
         <button class="btn light" id="selectVocabOnly">mainのみ</button>
         <button class="btn light" id="unselectAll">全解除</button>
       </div>
-      <p class="small warn">辞書を変更して読み込むと、それまで読み込んだ辞書と検索結果は消え、新しく選んだ辞書だけになる。</p>
+
+      <p class="small warn">
+        辞書を変更して読み込むと、それまで読み込んだ辞書と検索結果は消え、新しく選んだ辞書だけになる。
+      </p>
+
       <div id="drop" class="drop">
         <input id="jsonFiles" type="file" multiple accept=".json,application/json" style="display:none">
         <button class="btn gray" id="pickJson">JSONを手動選択して読み込み直す</button>
-        <div class="small" style="margin-top:6px">JSONをまとめて選択、またはドラッグ＆ドロップ</div>
+        <div class="small" style="margin-top:6px">
+          JSONをまとめて選択、またはドラッグ＆ドロップ
+        </div>
       </div>
-      <div class="progress" style="margin-top:8px"><div id="bar" class="bar"></div></div>
+
+      <div class="progress" style="margin-top:8px">
+        <div id="bar" class="bar"></div>
+      </div>
     </details>
-    <div class="compactNote"><span id="loadStatus" class="small">未読込</span></div>
+
+    <div class="compactNote">
+      <span id="loadStatus" class="small">未読込</span>
+    </div>
   </div>
 
   <div class="card">
     <h2 class="sectionTitle">検索条件</h2>
-    <div class="searchGrid">
-      <div class="field"><label>検索語 / パターン</label><input id="q" type="text" placeholder="例: こ*か / ??んご / 121 / すし"></div>
-      <div class="field"><label>検索種別</label><select id="mode"><option value="wild">自由検索</option><option value="contains">部分一致</option><option value="prefix">前方一致</option><option value="suffix">後方一致</option><option value="exact">完全一致</option><option value="regex">正規表現</option><option value="anagram">アナグラム</option><option value="shiritori">しりとり候補</option></select></div>
-      <div class="field"><label>最大表示</label><input id="limit" type="number" min="1" max="5000" value="500"></div>
-      <div class="field"><label>最小文字数</label><input id="minLen" type="number" min="0" placeholder="任意"></div>
-      <div class="field"><label>最大文字数</label><input id="maxLen" type="number" min="0" placeholder="任意"></div>
-    </div>
-    <div class="subGrid" style="margin-top:4px">
-      <div class="field"><label>位置指定（1始まり）</label><input id="pos" type="text" placeholder="例: 1=あ,3=ん,5=ご"></div>
-      <div class="field"><label>必ず含む</label><input id="must" type="text" placeholder="例: ん"></div>
-      <div class="field"><label>含まない</label><input id="ng" type="text" placeholder="例: ー"></div>
-      <div class="field"><label>&nbsp;</label><div class="rightBtns"><button class="btn" id="search">検索</button><button class="btn gray" id="clear">クリア</button></div></div>
-      <div></div><div></div>
-    </div>
-    <div class="compactNote small"><span class="pill"><b>*</b>任意文字列</span><span class="pill"><b>?</b>任意1文字</span><span class="pill"><b>1-9</b>同文字指定</span><span class="pill"><b>121</b>1文字目=3文字目</span></div>
-  </div>
 
-  <div class="card"><div class="stat"><div><span class="small">読込辞書数</span><b id="sDict">0</b></div><div><span class="small">読込語数</span><b id="sRows">0</b></div><div><span class="small">ユニーク語</span><b id="sUnique">0</b></div><div><span class="small">ヒット</span><b id="sHit">0</b></div></div></div>
+    <div class="searchGrid">
+      <div class="field">
+        <label>検索語 / パターン</label>
+        <input id="q" type="text" placeholder="例: こ*か / ??んご / 121 / すし">
+      </div>
+
+      <div class="field">
+        <label>検索種別</label>
+        <select id="mode">
+          <option value="wild">自由検索</option>
+          <option value="contains">部分一致</option>
+          <option value="prefix">前方一致</option>
+          <option value="suffix">後方一致</option>
+          <option value="exact">完全一致</option>
+          <option value="regex">正規表現</option>
+          <option value="anagram">アナグラム</option>
+          <option value="shiritori">しりとり候補</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>最大表示</label>
+        <input id="limit" type="number" min="1" max="5000" value="500">
+      </div>
+
+      <div class="field">
+        <label>最小文字数</label>
+        <input id="minLen" type="number" min="0" placeholder="任意">
+      </div>
+
+      <div class="field">
+        <label>最大文字数</label>
+        <input id="maxLen" type="number" min="0" placeholder="任意">
+      </div>
+    </div>
+
+    <div class="subGrid" style="margin-top:4px">
+      <div class="field">
+        <label>位置指定（1始まり）</label>
+        <input id="pos" type="text" placeholder="例: 1=あ,3=ん,5=ご">
+      </div>
+
+      <div class="field">
+        <label>必ず含む</label>
+        <input id="must" type="text" placeholder="例: ん">
+      </div>
+
+      <div class="field">
+        <label>含まない</label>
+        <input id="ng" type="text" placeholder="例: ー">
+      </div>
+
+      <div class="field">
+        <label>&nbsp;</label>
+        <div class="rightBtns">
+          <button class="btn" id="search">検索</button>
+          <button class="btn gray" id="clear">クリア</button>
+        </div>
+      </div>
+
+      <div></div>
+      <div></div>
+    </div>
+
+    <div class="compactNote small">
+      <span class="pill"><b>*</b>任意文字列</span>
+      <span class="pill"><b>?</b>任意1文字</span>
+      <span class="pill"><b>1-9</b>同文字指定</span>
+      <span class="pill"><b>121</b>1文字目=3文字目</span>
+    </div>
+  </div>
 
   <div class="card">
-    <div class="tabs"><button class="tab active" data-tab="result">検索結果</button><button class="tab" data-tab="tools">制作補助</button><button class="tab" data-tab="dicts">辞書情報</button><button class="tab" data-tab="history">履歴</button><button class="tab" data-tab="help">使い方</button></div>
-    <section id="result" class="panel active">
-      <div class="toolbar"><div id="status" class="small">辞書を読み込み中...</div><div class="rightBtns"><button class="btn light" id="exportCsv">Excel用CSV出力</button></div></div>
-      <div class="tableWrap"><table id="tbl"><colgroup><col class="col-word"><col class="col-len"><col class="col-space"></colgroup><thead><tr><th data-key="word">単語</th><th data-key="len">文字数</th><th class="futureSpace"></th></tr></thead><tbody></tbody></table></div>
-    </section>
-    <section id="tools" class="panel"><div class="row" style="align-items:flex-start;flex-wrap:wrap"><div class="card" style="box-shadow:none;flex:1;min-width:280px"><h3 class="sectionTitle">文字数分布</h3><div id="lenDist" class="small">検索後に表示</div></div><div class="card" style="box-shadow:none;flex:1;min-width:280px"><h3 class="sectionTitle">頭文字・末尾集計</h3><div id="headTail" class="small">検索後に表示</div></div></div><div class="field"><label>制作メモ</label><textarea id="memo" placeholder="ランダム抽出した候補などを保存"></textarea></div><div class="rightBtns"><button class="btn light" id="copyMemo">メモをコピー</button><button class="btn light" id="downloadMemo">メモを保存</button></div></section>
-    <section id="dicts" class="panel"><div id="dictInfo" class="small">未読込</div></section>
-    <section id="history" class="panel"><div id="hist" class="small">履歴なし</div></section>
-    <section id="help" class="panel small"><h3>仕様</h3><ul><li>単語名をクリックすると、その単語でGoogle検索を開く。</li><li>検索対象欄はない。現在読み込まれている辞書だけを検索する。</li></ul></section>
+    <div class="stat">
+      <div>
+        <span class="small">読込辞書数</span>
+        <b id="sDict">0</b>
+      </div>
+      <div>
+        <span class="small">読込語数</span>
+        <b id="sRows">0</b>
+      </div>
+      <div>
+        <span class="small">ユニーク語</span>
+        <b id="sUnique">0</b>
+      </div>
+      <div>
+        <span class="small">ヒット</span>
+        <b id="sHit">0</b>
+      </div>
+    </div>
   </div>
-</div><div class="toast" id="toast"></div>
+
+  <div class="card">
+    <div class="tabs">
+      <button class="tab active" data-tab="result">検索結果</button>
+      <button class="tab" data-tab="tools">制作補助</button>
+      <button class="tab" data-tab="dicts">辞書情報</button>
+      <button class="tab" data-tab="history">履歴</button>
+      <button class="tab" data-tab="help">使い方</button>
+    </div>
+
+    <section id="result" class="panel active">
+      <div class="toolbar">
+        <div id="status" class="small">辞書を読み込み中...</div>
+        <div class="rightBtns">
+          <button class="btn light" id="exportCsv">Excel用CSV出力</button>
+        </div>
+      </div>
+
+      <div class="tableWrap">
+        <table id="tbl">
+          <colgroup>
+            <col class="col-word">
+            <col class="col-len">
+            <col class="col-space">
+          </colgroup>
+          <thead>
+            <tr>
+              <th data-key="word">単語</th>
+              <th data-key="len">文字数</th>
+              <th class="futureSpace"></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tools" class="panel">
+      <div class="row" style="align-items:flex-start;flex-wrap:wrap">
+        <div class="card" style="box-shadow:none;flex:1;min-width:280px">
+          <h3 class="sectionTitle">文字数分布</h3>
+          <div id="lenDist" class="small">検索後に表示</div>
+        </div>
+
+        <div class="card" style="box-shadow:none;flex:1;min-width:280px">
+          <h3 class="sectionTitle">頭文字・末尾集計</h3>
+          <div id="headTail" class="small">検索後に表示</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>制作メモ</label>
+        <textarea id="memo" placeholder="候補語やメモを保存"></textarea>
+      </div>
+
+      <div class="rightBtns">
+        <button class="btn light" id="copyMemo">メモをコピー</button>
+        <button class="btn light" id="downloadMemo">メモを保存</button>
+      </div>
+    </section>
+
+    <section id="dicts" class="panel">
+      <div id="dictInfo" class="small">未読込</div>
+    </section>
+
+    <section id="history" class="panel">
+      <div id="hist" class="small">履歴なし</div>
+    </section>
+
+    <section id="help" class="panel small">
+      <h3>仕様</h3>
+      <ul>
+        <li>単語名をクリックすると、その単語でGoogle検索を開く。</li>
+        <li>検索対象欄はない。現在読み込まれている辞書だけを検索する。</li>
+        <li>初期状態では <span class="mono">dict_vocab_unique.json</span> のみ読み込む。</li>
+        <li>辞書を変更して読み込むと、以前の読込内容と検索結果はクリアされる。</li>
+      </ul>
+    </section>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
 <script>
-const PRESETS=[
-  {file:'dict_illustration.json',label:'イラスト辞書',checked:false},
-  {file:'dict_general.json',label:'一般語辞典',checked:false},
-  {file:'dict_kobuta.json',label:'仔豚辞書',checked:false},
-  {file:'dict_food.json',label:'食べ物辞書',checked:false},
-  {file:'dict_vocab_unique.json',label:'全辞書（重複削除済み）',checked:true}
+const PRESETS = [
+  {file:'dict_illustration.json', label:'イラスト辞書', checked:false},
+  {file:'dict_general.json',      label:'一般語辞典', checked:false},
+  {file:'dict_kobuta.json',       label:'仔豚辞書', checked:false},
+  {file:'dict_food.json',         label:'食べ物辞書', checked:false},
+  {file:'dict_vocab_unique.json', label:'全辞書（重複削除済み）', checked:true}
 ];
-const $=id=>document.getElementById(id);
-const dictionaries=new Map();
-let results=[];
-let sortKey='word';
-let sortAsc=true;
-let history=safeHistoryLoad();
-function safeHistoryLoad(){try{return JSON.parse(localStorage.getItem('nazoJsonSearchHistory')||'[]')}catch(e){return []}}
-function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-function toast(msg,err=false){const t=$('toast');t.textContent=msg;t.style.background=err?'#991b1b':'#111827';t.style.display='block';setTimeout(()=>t.style.display='none',3000)}
-function setBar(v){$('bar').style.width=v+'%'}
-function norm(s){return (s||'').normalize('NFKC').trim()}
-function escReg(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
-function sig(s){return [...s].sort().join('')}
-function initPresets(){$('presetList').innerHTML=PRESETS.map(p=>`<label class="dictItem"><input type="checkbox" class="preset" value="${esc(p.file)}" ${p.checked?'checked':''}><span><b>${esc(p.label)}</b><br><span class="small mono">${esc(p.file)}</span></span></label>`).join('')}
+
+const $ = id => document.getElementById(id);
+
+const dictionaries = new Map();
+
+let results = [];
+let sortKey = 'word';
+let sortAsc = true;
+let history = safeHistoryLoad();
+
+function safeHistoryLoad(){
+  try{
+    return JSON.parse(localStorage.getItem('nazoJsonSearchHistory') || '[]');
+  }catch(e){
+    return [];
+  }
+}
+
+function esc(s){
+  return String(s ?? '').replace(/[&<>"]/g, c => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;'
+  }[c]));
+}
+
+function toast(msg, err=false){
+  const t = $('toast');
+  t.textContent = msg;
+  t.style.background = err ? '#991b1b' : '#111827';
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3000);
+}
+
+function setBar(v){
+  $('bar').style.width = v + '%';
+}
+
+function norm(s){
+  return (s || '').normalize('NFKC').trim();
+}
+
+function escReg(s){
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function sig(s){
+  return [...s].sort().join('');
+}
+
+function initPresets(){
+  $('presetList').innerHTML = PRESETS.map(p => `
+    <label class="dictItem">
+      <input type="checkbox" class="preset" value="${esc(p.file)}" ${p.checked ? 'checked' : ''}>
+      <span>
+        <b>${esc(p.label)}</b><br>
+        <span class="small mono">${esc(p.file)}</span>
+      </span>
+    </label>
+  `).join('');
+}
+
 initPresets();
-function setPreset(mode){document.querySelectorAll('.preset').forEach(c=>{if(mode==='all')c.checked=true;else if(mode==='none')c.checked=false;else c.checked=c.value==='dict_vocab_unique.json'})}
-$('selectAll').onclick=()=>setPreset('all');$('unselectAll').onclick=()=>setPreset('none');$('selectVocabOnly').onclick=()=>setPreset('vocab');
-function clearLoadedData(){dictionaries.clear();results=[];const tbody=$('tbl').querySelector('tbody');tbody.textContent='';$('sHit').textContent='0';renderTools();updateStats()}
-function toRows(obj){const cols=obj.columns||['word','count','source_id','len','head','tail'];const idx=Object.fromEntries(cols.map((c,i)=>[c,i]));const name=obj.name||obj.source_file||'辞書';return (obj.records||[]).map(r=>{const w=r[idx.word]||'';const chars=[...w];return {word:w,count:+(r[idx.count]||1),source_id:r[idx.source_id]||'',len:+(r[idx.len]||chars.length),head:r[idx.head]||chars[0]||'',tail:r[idx.tail]||chars.at(-1)||'',dict:name}})}
-async function loadJsonText(name,text){const obj=JSON.parse(text);const rows=toRows(obj);const dictName=obj.name||obj.source_file||name;dictionaries.set(dictName,rows);updateStats();toast(`${dictName} を読み込みました（${rows.length.toLocaleString()}語）`)}
-async function loadSelectedDictionaries(){const checked=[...document.querySelectorAll('.preset:checked')].map(c=>c.value);if(!checked.length)return toast('読み込むJSONを選択してください',true);clearLoadedData();$('status').textContent='辞書を読み込み中...';let done=0;for(const file of checked){try{const res=await fetch(file,{cache:'no-store'});if(!res.ok)throw new Error(`${file}: ${res.status}`);await loadJsonText(file,await res.text());setBar(Math.round(++done/checked.length*100))}catch(err){toast(`自動読込失敗: ${file}。手動選択を使ってください。`,true);console.error(err)}}setBar(0);$('status').textContent=dictionaries.size?'辞書読み込み完了。検索できます。':'辞書を読み込んでください。'}
-$('autoLoad').onclick=loadSelectedDictionaries;
-$('pickJson').onclick=()=>$('jsonFiles').click();$('jsonFiles').onchange=e=>loadManual(e.target.files);
-const drop=$('drop');['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('drag')}));['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag')}));drop.addEventListener('drop',e=>{e.preventDefault();loadManual(e.dataTransfer.files)});
-function loadManual(files){const arr=[...files];if(!arr.length)return;clearLoadedData();$('status').textContent='辞書を読み込み中...';let done=0;arr.forEach(f=>{const r=new FileReader();r.onload=async()=>{try{await loadJsonText(f.name,r.result)}catch(e){toast(`${f.name}: 読み込み失敗`,true);console.error(e)}setBar(Math.round(++done/arr.length*100));if(done===arr.length){setBar(0);$('status').textContent=dictionaries.size?'辞書読み込み完了。検索できます。':'辞書を読み込んでください。'}};r.readAsText(f,'utf-8')})}
-function updateStats(){let rows=0;const words=new Set();const info=[];for(const [name,arr] of dictionaries){rows+=arr.length;for(const r of arr)words.add(r.word);info.push({name,rows:arr.length})}$('sDict').textContent=dictionaries.size;$('sRows').textContent=rows.toLocaleString();$('sUnique').textContent=words.size.toLocaleString();$('loadStatus').textContent=dictionaries.size?`読込済み: ${info.map(x=>x.name+'('+x.rows.toLocaleString()+')').join(' / ')}`:'未読込';$('dictInfo').innerHTML=info.length?'<table><thead><tr><th>辞書</th><th>語数</th></tr></thead><tbody>'+info.map(x=>`<tr><td>${esc(x.name)}</td><td>${x.rows.toLocaleString()}</td></tr>`).join('')+'</tbody></table>':'未読込'}
-function posParse(s){return (s||'').split(/[,、]/).map(x=>x.trim()).filter(Boolean).map(x=>{const m=x.match(/^(\d+)\s*=\s*(.+)$/);return m?{i:+m[1]-1,c:m[2]}:null}).filter(Boolean)}
-function wcReg(p){let out='';for(const ch of [...p]){if(ch==='*'||ch==='＊')out+='.*';else if(ch==='?'||ch==='？'||ch==='0'||ch==='、')out+='.';else if(/[1-9]/.test(ch))out+='.';else out+=escReg(ch)}return out}
-function sameDigit(p,w){const map={};const ps=[...p],ws=[...w];for(let i=0;i<ps.length;i++){const c=ps[i];if(/[1-9]/.test(c)){if(!ws[i])return false;if(map[c]&&map[c]!==ws[i])return false;map[c]=ws[i]}}return true}
-function opt(){return{q:$('q').value,mode:$('mode').value,limit:$('limit').value,minLen:$('minLen').value,maxLen:$('maxLen').value,pos:$('pos').value,must:$('must').value,ng:$('ng').value}}
-function run(){try{$('status').textContent='検索中...';const o=opt();const q=norm(o.q);const minL=+o.minLen||0;const maxL=+o.maxLen||99999;const limit=Math.min(Math.max(+o.limit||500,1),5000);$('limit').value=limit;const pos=posParse(o.pos);const must=[...norm(o.must)];const ng=[...norm(o.ng)];let reg=null,an='';if(o.mode==='regex')reg=new RegExp(q);else if(o.mode==='wild')reg=new RegExp('^'+wcReg(q)+'$');else if(o.mode==='anagram')an=sig(q);results=[];outer: for(const pool of dictionaries.values()){for(const r of pool){if(r.len<minL||r.len>maxL)continue;const w=r.word;if(must.some(c=>!w.includes(c)))continue;if(ng.some(c=>w.includes(c)))continue;const ws=[...w];let okPos=true;for(const p of pos){if(ws[p.i]!==p.c){okPos=false;break}}if(!okPos)continue;let ok=!q;if(q){if(o.mode==='contains')ok=w.includes(q);else if(o.mode==='prefix')ok=w.startsWith(q);else if(o.mode==='suffix')ok=w.endsWith(q);else if(o.mode==='exact')ok=w===q;else if(o.mode==='regex')ok=reg.test(w);else if(o.mode==='wild')ok=reg.test(w)&&sameDigit(q,w);else if(o.mode==='anagram')ok=w!==q&&sig(w)===an;else if(o.mode==='shiritori')ok=w.startsWith([...q].at(-1)||'')}if(ok){results.push(r);if(results.length>=limit)break outer}}}render();saveHistory()}catch(e){$('status').textContent='エラー: '+e.message;toast(e.message,true);console.error(e)}}
-$('search').onclick=run;['q','mode','limit','minLen','maxLen','pos','must','ng'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter')run()}));$('clear').onclick=()=>{['q','minLen','maxLen','pos','must','ng'].forEach(id=>$(id).value='');run()};
-function sortResults(){results.sort((a,b)=>{const av=a[sortKey],bv=b[sortKey];if(typeof av==='string')return sortAsc?av.localeCompare(bv,'ja'):bv.localeCompare(av,'ja');return sortAsc?av-bv:bv-av})}
-function wordHtml(w,q,mode){const safeWord=esc(w);const safeQ=esc(q);let label=safeWord;if(q&&mode==='contains')label=safeWord.replaceAll(safeQ,`<mark>${safeQ}</mark>`);return `<a class="wordLink" target="_blank" rel="noopener" href="https://www.google.com/search?q=${encodeURIComponent(w)}">${label}</a>`}
-function render(){sortResults();$('sHit').textContent=results.length.toLocaleString();$('status').textContent=`${results.length.toLocaleString()}件を表示中`;const q=$('q').value.trim(),mode=$('mode').value;const tbody=$('tbl').querySelector('tbody');tbody.textContent='';const frag=document.createDocumentFragment();results.forEach(r=>{const tr=document.createElement('tr');const td1=document.createElement('td');td1.innerHTML=wordHtml(r.word,q,mode);const td2=document.createElement('td');td2.textContent=r.len;const tdSpace=document.createElement('td');tdSpace.className='futureSpace';tdSpace.textContent='';tr.append(td1,td2,tdSpace);frag.appendChild(tr)});tbody.appendChild(frag);renderTools();renderHistory()}
-document.querySelectorAll('th[data-key]').forEach(th=>th.onclick=()=>{const k=th.dataset.key;if(sortKey===k)sortAsc=!sortAsc;else{sortKey=k;sortAsc=true}render()});
-function addMemoWord(w){$('memo').value+=($('memo').value?'\n':'')+w}
-$('copyWords').onclick=()=>navigator.clipboard.writeText(results.map(r=>r.word).join('\n')).then(()=>toast('単語リストをコピーしました'));
-$('randomPick').onclick=()=>{if(!results.length)return toast('結果がありません',true);const r=results[Math.floor(Math.random()*results.length)];addMemoWord(r.word);toast('ランダム: '+r.word)};
-function csvCell(s){s=String(s??'');return /[",\r\n]/.test(s)?'"'+s.replaceAll('"','""')+'"':s}
-function download(name,text,type='text/plain;charset=utf-8'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();URL.revokeObjectURL(a.href)}
-$('exportCsv').onclick=()=>{const header=['単語','文字数'];const lines=[header.map(csvCell).join(',')].concat(results.map(r=>[r.word,r.len].map(csvCell).join(',')));const csv='\ufeff'+lines.join('\r\n');download('search_results_excel.csv',csv,'text/csv;charset=utf-8')};
-$('copyMemo').onclick=()=>navigator.clipboard.writeText($('memo').value).then(()=>toast('メモをコピーしました'));$('downloadMemo').onclick=()=>download('nazo_memo.txt',$('memo').value);
-function renderTools(){const len={},head={},tail={};for(const r of results){len[r.len]=(len[r.len]||0)+1;head[r.head]=(head[r.head]||0)+1;tail[r.tail]=(tail[r.tail]||0)+1}$('lenDist').innerHTML=bars(len,999);$('headTail').innerHTML='<b>頭文字</b>'+bars(head,10)+'<br><b>末尾</b>'+bars(tail,10)}
-function bars(o,max){const arr=Object.entries(o).sort((a,b)=>b[1]-a[1]).slice(0,max);if(!arr.length)return '検索後に表示';const top=arr[0][1];return arr.map(([k,v])=>`<div class="row"><span style="width:52px">${esc(k)}</span><div class="progress" style="flex:1"><div class="bar" style="width:${v/top*100}%"></div></div><span style="width:70px;text-align:right">${v}</span></div>`).join('')}
-function saveHistory(){try{const h={...opt(),date:new Date().toLocaleString(),hit:results.length};history.unshift(h);history=history.slice(0,20);localStorage.setItem('nazoJsonSearchHistory',JSON.stringify(history))}catch(e){console.warn(e)}}
-function renderHistory(){$('hist').innerHTML=history.length?history.map((h,i)=>`<div class="pill" style="display:flex;justify-content:space-between"><span>${esc(h.date)} / ${esc(h.q||'(空)')} / ${esc(h.mode)} / ${h.hit}件</span><button class="btn light" onclick="restoreHist(${i})">再検索</button></div>`).join(''):'履歴なし'}
-function restoreHist(i){const h=history[i];for(const k of ['q','mode','limit','minLen','maxLen','pos','must','ng'])if($(k)&&h[k]!=null)$(k).value=h[k];run()}
-document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab,.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.tab).classList.add('active')});
-updateStats();renderHistory();
-window.addEventListener('DOMContentLoaded',()=>loadSelectedDictionaries());
+
+function setPreset(mode){
+  document.querySelectorAll('.preset').forEach(c => {
+    if(mode === 'none'){
+      c.checked = false;
+    }else if(mode === 'vocab'){
+      c.checked = c.value === 'dict_vocab_unique.json';
+    }
+  });
+}
+
+$('unselectAll').onclick = () => setPreset('none');
+$('selectVocabOnly').onclick = () => setPreset('vocab');
+
+function clearLoadedData(){
+  dictionaries.clear();
+  results = [];
+
+  const tbody = $('tbl').querySelector('tbody');
+  tbody.textContent = '';
+
+  $('sHit').textContent = '0';
+  $('status').textContent = '辞書を読み込んでください。';
+
+  renderTools();
+  updateStats();
+}
+
+function toRows(obj){
+  const cols = obj.columns || ['word','count','source_id','len','head','tail'];
+  const idx = Object.fromEntries(cols.map((c,i) => [c,i]));
+  const name = obj.name || obj.source_file || '辞書';
+
+  return (obj.records || []).map(r => {
+    const w = r[idx.word] || '';
+    const chars = [...w];
+
+    return {
+      word: w,
+      count: +(r[idx.count] || 1),
+      source_id: r[idx.source_id] || '',
+      len: +(r[idx.len] || chars.length),
+      head: r[idx.head] || chars[0] || '',
+      tail: r[idx.tail] || chars[chars.length - 1] || '',
+      dict: name
+    };
+  });
+}
+
+async function loadJsonText(name, text){
+  const obj = JSON.parse(text);
+  const rows = toRows(obj);
+  const dictName = obj.name || obj.source_file || name;
+
+  dictionaries.set(dictName, rows);
+  updateStats();
+
+  toast(`${dictName} を読み込みました（${rows.length.toLocaleString()}語）`);
+}
+
+async function loadSelectedDictionaries(){
+  const checked = [...document.querySelectorAll('.preset:checked')].map(c => c.value);
+
+  if(!checked.length){
+    toast('読み込むJSONを選択してください', true);
+    return;
+  }
+
+  clearLoadedData();
+
+  $('status').textContent = '辞書を読み込み中...';
+
+  let done = 0;
+
+  for(const file of checked){
+    try{
+      const res = await fetch(file, {cache:'no-store'});
+
+      if(!res.ok){
+        throw new Error(`${file}: ${res.status}`);
+      }
+
+      await loadJsonText(file, await res.text());
+
+      done++;
+      setBar(Math.round(done / checked.length * 100));
+    }catch(err){
+      toast(`自動読込失敗: ${file}。手動選択を使ってください。`, true);
+      console.error(err);
+    }
+  }
+
+  setBar(0);
+
+  $('status').textContent = dictionaries.size
+    ? '辞書読み込み完了。検索できます。'
+    : '辞書を読み込んでください。';
+}
+
+$('autoLoad').onclick = loadSelectedDictionaries;
+
+$('pickJson').onclick = () => $('jsonFiles').click();
+
+$('jsonFiles').onchange = e => {
+  loadManual(e.target.files);
+};
+
+const drop = $('drop');
+
+['dragenter','dragover'].forEach(ev => {
+  drop.addEventListener(ev, e => {
+    e.preventDefault();
+    drop.classList.add('drag');
+  });
+});
+
+['dragleave','drop'].forEach(ev => {
+  drop.addEventListener(ev, e => {
+    e.preventDefault();
+    drop.classList.remove('drag');
+  });
+});
+
+drop.addEventListener('drop', e => {
+  e.preventDefault();
+  loadManual(e.dataTransfer.files);
+});
+
+function loadManual(files){
+  const arr = [...files];
+
+  if(!arr.length){
+    return;
+  }
+
+  clearLoadedData();
+
+  $('status').textContent = '辞書を読み込み中...';
+
+  let done = 0;
+
+  arr.forEach(f => {
+    const r = new FileReader();
+
+    r.onload = async () => {
+      try{
+        await loadJsonText(f.name, r.result);
+      }catch(e){
+        toast(`${f.name}: 読み込み失敗`, true);
+        console.error(e);
+      }
+
+      done++;
+      setBar(Math.round(done / arr.length * 100));
+
+      if(done === arr.length){
+        setBar(0);
+        $('status').textContent = dictionaries.size
+          ? '辞書読み込み完了。検索できます。'
+          : '辞書を読み込んでください。';
+      }
+    };
+
+    r.readAsText(f, 'utf-8');
+  });
+}
+
+function updateStats(){
+  let rows = 0;
+  const words = new Set();
+  const info = [];
+
+  for(const [name, arr] of dictionaries){
+    rows += arr.length;
+
+    for(const r of arr){
+      words.add(r.word);
+    }
+
+    info.push({
+      name,
+      rows: arr.length
+    });
+  }
+
+  $('sDict').textContent = dictionaries.size;
+  $('sRows').textContent = rows.toLocaleString();
+  $('sUnique').textContent = words.size.toLocaleString();
+
+  $('loadStatus').textContent = dictionaries.size
+    ? `読込済み: ${info.map(x => x.name + '(' + x.rows.toLocaleString() + ')').join(' / ')}`
+    : '未読込';
+
+  $('dictInfo').innerHTML = info.length
+    ? '<table><thead><tr><th>辞書</th><th>語数</th></tr></thead><tbody>' +
+      info.map(x => `
+        <tr>
+          <td>${esc(x.name)}</td>
+          <td>${x.rows.toLocaleString()}</td>
+        </tr>
+      `).join('') +
+      '</tbody></table>'
+    : '未読込';
+}
+
+function posParse(s){
+  return (s || '')
+    .split(/[,、]/)
+    .map(x => x.trim())
+    .filter(Boolean)
+    .map(x => {
+      const m = x.match(/^(\d+)\s*=\s*(.+)$/);
+      return m ? {i:+m[1]-1, c:m[2]} : null;
+    })
+    .filter(Boolean);
+}
+
+function wcReg(p){
+  let out = '';
+
+  for(const ch of [...p]){
+    if(ch === '*' || ch === '＊'){
+      out += '.*';
+    }else if(ch === '?' || ch === '？' || ch === '0' || ch === '、'){
+      out += '.';
+    }else if(/[1-9]/.test(ch)){
+      out += '.';
+    }else{
+      out += escReg(ch);
+    }
+  }
+
+  return out;
+}
+
+function sameDigit(p, w){
+  const map = {};
+  const ps = [...p];
+  const ws = [...w];
+
+  for(let i=0; i<ps.length; i++){
+    const c = ps[i];
+
+    if(/[1-9]/.test(c)){
+      if(!ws[i]){
+        return false;
+      }
+
+      if(map[c] && map[c] !== ws[i]){
+        return false;
+      }
+
+      map[c] = ws[i];
+    }
+  }
+
+  return true;
+}
+
+function opt(){
+  return {
+    q:$('q').value,
+    mode:$('mode').value,
+    limit:$('limit').value,
+    minLen:$('minLen').value,
+    maxLen:$('maxLen').value,
+    pos:$('pos').value,
+    must:$('must').value,
+    ng:$('ng').value
+  };
+}
+
+function run(){
+  try{
+    if(!dictionaries.size){
+      toast('辞書が読み込まれていません。', true);
+      $('status').textContent = '辞書を読み込んでください。';
+      return;
+    }
+
+    $('status').textContent = '検索中...';
+
+    const o = opt();
+    const q = norm(o.q);
+    const minL = +o.minLen || 0;
+    const maxL = +o.maxLen || 99999;
+    const limit = Math.min(Math.max(+o.limit || 500, 1), 5000);
+
+    $('limit').value = limit;
+
+    const pos = posParse(o.pos);
+    const must = [...norm(o.must)];
+    const ng = [...norm(o.ng)];
+
+    let reg = null;
+    let an = '';
+
+    if(o.mode === 'regex'){
+      reg = new RegExp(q);
+    }else if(o.mode === 'wild'){
+      reg = new RegExp('^' + wcReg(q) + '$');
+    }else if(o.mode === 'anagram'){
+      an = sig(q);
+    }
+
+    results = [];
+
+    outer:
+    for(const pool of dictionaries.values()){
+      for(const r of pool){
+        if(r.len < minL || r.len > maxL){
+          continue;
+        }
+
+        const w = r.word;
+
+        if(must.some(c => !w.includes(c))){
+          continue;
+        }
+
+        if(ng.some(c => w.includes(c))){
+          continue;
+        }
+
+        const ws = [...w];
+        let okPos = true;
+
+        for(const p of pos){
+          if(ws[p.i] !== p.c){
+            okPos = false;
+            break;
+          }
+        }
+
+        if(!okPos){
+          continue;
+        }
+
+        let ok = !q;
+
+        if(q){
+          if(o.mode === 'contains'){
+            ok = w.includes(q);
+          }else if(o.mode === 'prefix'){
+            ok = w.startsWith(q);
+          }else if(o.mode === 'suffix'){
+            ok = w.endsWith(q);
+          }else if(o.mode === 'exact'){
+            ok = w === q;
+          }else if(o.mode === 'regex'){
+            ok = reg.test(w);
+          }else if(o.mode === 'wild'){
+            ok = reg.test(w) && sameDigit(q, w);
+          }else if(o.mode === 'anagram'){
+            ok = w !== q && sig(w) === an;
+          }else if(o.mode === 'shiritori'){
+            const chars = [...q];
+            ok = w.startsWith(chars[chars.length - 1] || '');
+          }
+        }
+
+        if(ok){
+          results.push(r);
+
+          if(results.length >= limit){
+            break outer;
+          }
+        }
+      }
+    }
+
+    render();
+    saveHistory();
+
+  }catch(e){
+    $('status').textContent = 'エラー: ' + e.message;
+    toast(e.message, true);
+    console.error(e);
+  }
+}
+
+$('search').onclick = run;
+
+['q','mode','limit','minLen','maxLen','pos','must','ng'].forEach(id => {
+  $(id).addEventListener('keydown', e => {
+    if(e.key === 'Enter'){
+      run();
+    }
+  });
+});
+
+$('clear').onclick = () => {
+  ['q','minLen','maxLen','pos','must','ng'].forEach(id => {
+    $(id).value = '';
+  });
+
+  run();
+};
+
+function sortResults(){
+  results.sort((a,b) => {
+    const av = a[sortKey];
+    const bv = b[sortKey];
+
+    if(typeof av === 'string'){
+      return sortAsc
+        ? av.localeCompare(bv, 'ja')
+        : bv.localeCompare(av, 'ja');
+    }
+
+    return sortAsc
+      ? av - bv
+      : bv - av;
+  });
+}
+
+function wordHtml(w, q, mode){
+  const safeWord = esc(w);
+  const safeQ = esc(q);
+
+  let label = safeWord;
+
+  if(q && mode === 'contains'){
+    label = safeWord.replaceAll(safeQ, `<mark>${safeQ}</mark>`);
+  }
+
+  return `<a class="wordLink" target="_blank" rel="noopener" href="https://www.google.com/search?q=${encodeURIComponent(w)}">${label}</a>`;
+}
+
+function render(){
+  sortResults();
+
+  $('sHit').textContent = results.length.toLocaleString();
+  $('status').textContent = `${results.length.toLocaleString()}件を表示中`;
+
+  const q = $('q').value.trim();
+  const mode = $('mode').value;
+  const tbody = $('tbl').querySelector('tbody');
+
+  tbody.textContent = '';
+
+  const frag = document.createDocumentFragment();
+
+  results.forEach(r => {
+    const tr = document.createElement('tr');
+
+    const td1 = document.createElement('td');
+    td1.innerHTML = wordHtml(r.word, q, mode);
+
+    const td2 = document.createElement('td');
+    td2.textContent = r.len;
+
+    const tdSpace = document.createElement('td');
+    tdSpace.className = 'futureSpace';
+    tdSpace.textContent = '';
+
+    tr.append(td1, td2, tdSpace);
+    frag.appendChild(tr);
+  });
+
+  tbody.appendChild(frag);
+
+  renderTools();
+  renderHistory();
+}
+
+document.querySelectorAll('th[data-key]').forEach(th => {
+  th.onclick = () => {
+    const k = th.dataset.key;
+
+    if(sortKey === k){
+      sortAsc = !sortAsc;
+    }else{
+      sortKey = k;
+      sortAsc = true;
+    }
+
+    render();
+  };
+});
+
+function csvCell(s){
+  s = String(s ?? '');
+
+  return /[",\r\n]/.test(s)
+    ? '"' + s.replaceAll('"','""') + '"'
+    : s;
+}
+
+function download(name, text, type='text/plain;charset=utf-8'){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text], {type}));
+  a.download = name;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+$('exportCsv').onclick = () => {
+  const header = ['単語','文字数'];
+
+  const lines = [header.map(csvCell).join(',')].concat(
+    results.map(r => [r.word, r.len].map(csvCell).join(','))
+  );
+
+  const csv = '\ufeff' + lines.join('\r\n');
+
+  download('search_results_excel.csv', csv, 'text/csv;charset=utf-8');
+};
+
+$('copyMemo').onclick = () => {
+  navigator.clipboard.writeText($('memo').value)
+    .then(() => toast('メモをコピーしました'));
+};
+
+$('downloadMemo').onclick = () => {
+  download('nazo_memo.txt', $('memo').value);
+};
+
+function renderTools(){
+  const len = {};
+  const head = {};
+  const tail = {};
+
+  for(const r of results){
+    len[r.len] = (len[r.len] || 0) + 1;
+    head[r.head] = (head[r.head] || 0) + 1;
+    tail[r.tail] = (tail[r.tail] || 0) + 1;
+  }
+
+  $('lenDist').innerHTML = bars(len, 999);
+
+  $('headTail').innerHTML =
+    '<b>頭文字</b>' +
+    bars(head, 10) +
+    '<br><b>末尾</b>' +
+    bars(tail, 10);
+}
+
+function bars(o, max){
+  const arr = Object.entries(o)
+    .sort((a,b) => b[1] - a[1])
+    .slice(0, max);
+
+  if(!arr.length){
+    return '検索後に表示';
+  }
+
+  const top = arr[0][1];
+
+  return arr.map(([k,v]) => `
+    <div class="row">
+      <span style="width:52px">${esc(k)}</span>
+      <div class="progress" style="flex:1">
+        <div class="bar" style="width:${v / top * 100}%"></div>
+      </div>
+      <span style="width:70px;text-align:right">${v}</span>
+    </div>
+  `).join('');
+}
+
+function saveHistory(){
+  try{
+    const h = {
+      ...opt(),
+      date:new Date().toLocaleString(),
+      hit:results.length
+    };
+
+    history.unshift(h);
+    history = history.slice(0, 20);
+
+    localStorage.setItem('nazoJsonSearchHistory', JSON.stringify(history));
+  }catch(e){
+    console.warn(e);
+  }
+}
+
+function renderHistory(){
+  $('hist').innerHTML = history.length
+    ? history.map((h,i) => `
+      <div class="pill" style="display:flex;justify-content:space-between">
+        <span>${esc(h.date)} / ${esc(h.q || '(空)')} / ${esc(h.mode)} / ${h.hit}件</span>
+        <button class="btn light" onclick="restoreHist(${i})">再検索</button>
+      </div>
+    `).join('')
+    : '履歴なし';
+}
+
+function restoreHist(i){
+  const h = history[i];
+
+  for(const k of ['q','mode','limit','minLen','maxLen','pos','must','ng']){
+    if($(k) && h[k] != null){
+      $(k).value = h[k];
+    }
+  }
+
+  run();
+}
+
+document.querySelectorAll('.tab').forEach(b => {
+  b.onclick = () => {
+    document.querySelectorAll('.tab,.panel').forEach(x => {
+      x.classList.remove('active');
+    });
+
+    b.classList.add('active');
+    $(b.dataset.tab).classList.add('active');
+  };
+});
+
+updateStats();
+renderHistory();
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadSelectedDictionaries();
+});
 </script>
 </body>
 </html>
