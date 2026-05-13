@@ -12,7 +12,7 @@
 <body>
 <div class="wrap">
   <div class="hero">
-    <div><h1>辞書検索 JSON版</h1><p>アクセス時に vocab 辞書を自動読み込みし、検索結果を下に表示する。</p></div>
+    <div><h1>辞書検索 JSON版</h1></div>
     <div class="small">初期自動読込: <span class="mono">dict_vocab_unique.json</span></div>
   </div>
 
@@ -21,9 +21,8 @@
       <summary>辞書を変更する</summary>
       <div class="dictList" id="presetList"></div>
       <div class="row" style="margin-top:8px;align-items:center">
-        <button class="btn" id="autoLoad">選択JSONを読み込み直す</button>
-        <button class="btn light" id="selectVocabOnly">vocabのみ</button>
-        <button class="btn light" id="selectAll">全選択</button>
+        <button class="btn" id="autoLoad">辞書を読み込み直す</button>
+        <button class="btn light" id="selectVocabOnly">mainのみ</button>
         <button class="btn light" id="unselectAll">全解除</button>
       </div>
       <p class="small warn">辞書を変更して読み込むと、それまで読み込んだ辞書と検索結果は消え、新しく選んだ辞書だけになる。</p>
@@ -41,7 +40,7 @@
     <h2 class="sectionTitle">検索条件</h2>
     <div class="searchGrid">
       <div class="field"><label>検索語 / パターン</label><input id="q" type="text" placeholder="例: こ*か / ??んご / 121 / すし"></div>
-      <div class="field"><label>検索種別</label><select id="mode"><option value="wild">ワイルドカード</option><option value="contains">部分一致</option><option value="prefix">前方一致</option><option value="suffix">後方一致</option><option value="exact">完全一致</option><option value="regex">正規表現</option><option value="anagram">アナグラム</option><option value="shiritori">しりとり候補</option></select></div>
+      <div class="field"><label>検索種別</label><select id="mode"><option value="wild">自由検索</option><option value="contains">部分一致</option><option value="prefix">前方一致</option><option value="suffix">後方一致</option><option value="exact">完全一致</option><option value="regex">正規表現</option><option value="anagram">アナグラム</option><option value="shiritori">しりとり候補</option></select></div>
       <div class="field"><label>最大表示</label><input id="limit" type="number" min="1" max="5000" value="500"></div>
       <div class="field"><label>最小文字数</label><input id="minLen" type="number" min="0" placeholder="任意"></div>
       <div class="field"><label>最大文字数</label><input id="maxLen" type="number" min="0" placeholder="任意"></div>
@@ -61,13 +60,13 @@
   <div class="card">
     <div class="tabs"><button class="tab active" data-tab="result">検索結果</button><button class="tab" data-tab="tools">制作補助</button><button class="tab" data-tab="dicts">辞書情報</button><button class="tab" data-tab="history">履歴</button><button class="tab" data-tab="help">使い方</button></div>
     <section id="result" class="panel active">
-      <div class="toolbar"><div id="status" class="small">辞書を読み込み中...</div><div class="rightBtns"><button class="btn light" id="copyWords">単語のみコピー</button><button class="btn light" id="exportCsv">Excel用CSV出力</button><button class="btn green" id="randomPick">ランダム抽出</button></div></div>
+      <div class="toolbar"><div id="status" class="small">辞書を読み込み中...</div><div class="rightBtns"><button class="btn light" id="exportCsv">Excel用CSV出力</button></div></div>
       <div class="tableWrap"><table id="tbl"><colgroup><col class="col-word"><col class="col-len"><col class="col-space"></colgroup><thead><tr><th data-key="word">単語</th><th data-key="len">文字数</th><th class="futureSpace"></th></tr></thead><tbody></tbody></table></div>
     </section>
     <section id="tools" class="panel"><div class="row" style="align-items:flex-start;flex-wrap:wrap"><div class="card" style="box-shadow:none;flex:1;min-width:280px"><h3 class="sectionTitle">文字数分布</h3><div id="lenDist" class="small">検索後に表示</div></div><div class="card" style="box-shadow:none;flex:1;min-width:280px"><h3 class="sectionTitle">頭文字・末尾集計</h3><div id="headTail" class="small">検索後に表示</div></div></div><div class="field"><label>制作メモ</label><textarea id="memo" placeholder="ランダム抽出した候補などを保存"></textarea></div><div class="rightBtns"><button class="btn light" id="copyMemo">メモをコピー</button><button class="btn light" id="downloadMemo">メモを保存</button></div></section>
     <section id="dicts" class="panel"><div id="dictInfo" class="small">未読込</div></section>
     <section id="history" class="panel"><div id="hist" class="small">履歴なし</div></section>
-    <section id="help" class="panel small"><h3>仕様</h3><ul><li>検索条件から「出現回数 min / max」を削除した。</li><li>単語名をクリックすると、その単語でGoogle検索を開く。</li><li>結果表から「出現回数」「辞書」「ID」「操作」は削除した。</li><li>右側には後から別要素を入れられるよう、空白列を残している。</li><li>アクセス時点で <span class="kbd">dict_vocab_unique.json</span> を自動読み込みする。</li><li>検索対象欄はない。現在読み込まれている辞書だけを検索する。</li><li>辞書変更時は、以前の辞書・検索結果を消してから、新しく選択した辞書だけを読み込む。</li><li>CSVはExcelで文字化けしにくい UTF-8 BOM付きで出力する。</li></ul></section>
+    <section id="help" class="panel small"><h3>仕様</h3><ul><li>単語名をクリックすると、その単語でGoogle検索を開く。</li><li>検索対象欄はない。現在読み込まれている辞書だけを検索する。</li></ul></section>
   </div>
 </div><div class="toast" id="toast"></div>
 <script>
@@ -76,7 +75,7 @@ const PRESETS=[
   {file:'dict_general.json',label:'一般語辞典',checked:false},
   {file:'dict_kobuta.json',label:'仔豚辞書',checked:false},
   {file:'dict_food.json',label:'食べ物辞書',checked:false},
-  {file:'dict_vocab_unique.json',label:'vocab_unique（重複削除版）',checked:true}
+  {file:'dict_vocab_unique.json',label:'全辞書（重複削除済み）',checked:true}
 ];
 const $=id=>document.getElementById(id);
 const dictionaries=new Map();
