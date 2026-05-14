@@ -647,20 +647,16 @@ function makeShiftedWord(word,shift){
   }
   return out;
 }
-
+const SLIDE_MIN = -46;
+const SLIDE_MAX = 46;
 function getSlideMatches(word){
-  const set=getLoadedWordSet();
-  const arr=[];
-
-  for(let shift=-15;shift<=15;shift++){
+  const set=getLoadedWordSet(),arr=[];
+  for(let shift=SLIDE_MIN;shift<=SLIDE_MAX;shift++){
     if(shift===0)continue;
-
     const shifted=makeShiftedWord(word,shift);
     if(!shifted||shifted===word)continue;
-
     if(set.has(shifted))arr.push({word:shifted,shift});
   }
-
   return arr;
 }
 
